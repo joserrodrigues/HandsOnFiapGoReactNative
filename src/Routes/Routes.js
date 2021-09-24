@@ -7,16 +7,20 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeController from '../Screens/Home/HomeController';
 import ProductDetailController from '../Screens/ProductDetail/ProductDetailController';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 const Stack = createStackNavigator();
 const Routes = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Home" component={HomeController} />
-                <Stack.Screen name="Detail" component={ProductDetailController} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Provider store={store}>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Home" component={HomeController} />
+                    <Stack.Screen name="Detail" component={ProductDetailController} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </Provider>
 
     )
 }
