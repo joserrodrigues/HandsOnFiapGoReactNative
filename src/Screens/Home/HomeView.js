@@ -1,50 +1,66 @@
+//Importar o useState no componente
 import React from 'react';
-import { SafeAreaView, Text, FlatList, TouchableOpacity, RefreshControl } from "react-native";
+import styles from './HomeViewStyle';
+import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { Formik } from 'formik'
 
-import styles from './HomeViewStyle'
+
 
 const HomeView = (props) => {
 
-
-    /* Nessa função, colocamos o JSX equivalente para cada item da lista */
-    const renderItem = ({ item, index }) => {
-        let colorTextInfo = { color: '#333333' };
-        if (item._id === props.selectedID) {
-            colorTextInfo = { color: '#ff0000' };
-        }
-        return (
-            <TouchableOpacity onPress={() => props.onSelected(item)}
-                style={[{ padding: 10 }]} key={item._id}>
-                <Text style={[styles.text, colorTextInfo]}>{item.title}</Text>
-                <Text style={[styles.textSmall, colorTextInfo]}>{item.type}</Text>
-            </TouchableOpacity>
-        );
-    }
-
-    /* Colocamos o SafeArea para somente utilizar as áreas clicaveis do celular
-             e flex:1 para utilizar a tela inteira */
     return (
-        <SafeAreaView style={styles.container} >
-            <FlatList
-                //No data, colocamos o array com os itens a ser exibidos
-                data={props.items}
-                //No renderItem, coloamos a função onde será exibido o item
-                renderItem={renderItem}
-                //No Keyextractor, colocamos o valor único para cada item
-                keyExtractor={item => item._id + ""}
-                //No extradata, colocamos as informações extras que atualizam o FlatList
-                extraData={props.selectedID}
-                //No refreshControl, coloca o componente para atualizar a tela
-                refreshControl={
-                    <RefreshControl
-                        refreshing={props.refreshing}
-                        onRefresh={() => props.onRefresh()}
-                    />
-                }
-            />
-        </SafeAreaView>
+        <View style={styles.container}>
+            <Formik
+                validationSchema={props.loginValidationSchema}
+                initialValues={{ title: '', type: '' }}
+                onSubmit={values => props.addInfo(values)}
+            >
+                {({
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    errors,
+                    isValid,
+                }) => (
+                    <>
+
+                        <Text style={styles.text}>Produto</Text>
+                        <TextInput
+                            style={styles.textInput}
+                            name="title"
+                            placeholder="Titulo do Produto"
+                            style={styles.textInput}
+                            onChangeText={handleChange('title')}
+                            onBlur={handleBlur('title')}
+                            value={values.title}
+                        />
+                        {errors.title &&
+                            <Text style={styles.messageError}>{errors.title}</Text>
+                        }
+                        <Text style={styles.text}>Tipo</Text>
+                        <TextInput
+                            name="type"
+                            placeholder="Tipo de Produto"
+                            style={styles.textInput}
+                            onChangeText={handleChange('type')}
+                            onBlur={handleBlur('type')}
+                            value={values.type}
+                        />
+                        {errors.type &&
+                            <Text style={styles.messageError}>{errors.type}</Text>
+                        }
+                        <TouchableOpacity
+                            style={styles.buttonView}
+                            onPress={handleSubmit}
+                            disabled={!isValid}
+                        >
+                            <Text style={styles.button}>Salvar</Text>
+                        </TouchableOpacity>
+                    </>
+                )}
+            </Formik>
+        </View>
     );
-
 }
-
 export default HomeView;

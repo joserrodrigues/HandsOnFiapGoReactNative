@@ -1,19 +1,30 @@
-//Importar o useState no componente
-import React from "react";
-import { View } from 'react-native';
-import InfoComp1Controller from '../../Components/InfoComp1/InfoComp1Controller';
-import InfoComp2Controller from '../../Components/InfoComp2/InfoComp2Controller';
-
-const HomeController = () => {
+import React from 'react';
+import HomeView from './HomeView';
+import * as yup from 'yup'
 
 
-    //Passando a variavel information como o props info e a função onClicked
-    return (
-        <View>
-            <InfoComp1Controller />
-            <InfoComp2Controller />
-        </View>
-    )
+const HomeController = ({ navigation, route }) => {
+
+    const loginValidationSchema = yup.object().shape({
+        title: yup
+            .string()
+            .min(4, ({ min }) => `O nome deve ter no mínimo ${min} characters`)
+            .required('Nome é obrigatório'),
+        type: yup
+            .string()
+            .min(4, ({ min }) => `O tipo de produto deve ter no mínimo ${min} characters`)
+            .required('Tipo de produto é obrigatório'),
+    });
+
+
+    const addInfo = (values) => {
+        console.log(values);
+    }
+
+    //Passando as informações para o View
+    return <HomeView
+        loginValidationSchema={loginValidationSchema}
+        addInfo={addInfo}
+    />;
 }
-
 export default HomeController;

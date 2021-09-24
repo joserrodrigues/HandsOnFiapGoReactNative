@@ -8,29 +8,37 @@ export default StyleSheet.create({
         marginTop: 40
     },
     text: {
-        fontSize: 28,
-        margin: 10
-    },
-    textButton: {
-        fontSize: 28,
-        margin: 10,
-        color: 'blue',
+        fontSize: 22,
         fontWeight: 'bold',
-        textAlign: 'center'
+        margin: 10,
+        marginLeft: 20,
     },
-    viewLogo: {
-        alignItems: 'center',
-        margin: 15,
-        justifyContent: 'center',
+    textDetail: {
+        fontSize: 20,
+        margin: 10,
+        marginLeft: 20,
     },
-    tinyLogo: {
-        height: 80,
-        width: 80,
-        textAlign: 'center'
+    textInput: {
+        margin: 10,
+        fontSize: 18,
+        marginLeft: 20,
     },
-    textSmall: {
+    buttonView: {
+        backgroundColor: '#030e87',
+        margin: 20,
+        padding: 14,
+        textAlign: 'center',
+        borderRadius: 100,
+    },
+    button: {
+        color: 'white',
         fontSize: 16,
-        marginLeft: 10,
+        textAlign: 'center',
+        fontWeight: 'bold',
     },
-
+    messageError: {
+        color: 'red',
+        fontSize: 13,
+        marginLeft: 20,
+    }
 });
