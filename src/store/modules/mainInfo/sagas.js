@@ -3,32 +3,37 @@
  */
 //Importa os effects do Redux-Saga 
 import { takeLatest, call, put, all } from 'redux-saga/effects';
+import api from '../../../Services/api';
+import qs from 'qs';
 
 // Importa as funções Actions que serão chamadas pelo Saga
 import {
     changeInfo,
 } from './actions';
 
-//Função que retorna um texto após 3 segundos (somente para teste)
-function getInfo() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                info: "Info do Saga",
-            });
-        }, 3000);
-    });
-}
+
 
 //Saga responsável por Buscar a informação e alterar o Reducer
 function* getNewInfo() {
     console.log("SAGA - getNewInfo");
-    //Chama o método assícrono getInfo e retorna a informação após executar a informação
-    const dataReturn = yield call(getInfo)
 
-    console.log("SAGA - Retorno do Call GetInfo " + dataReturn.info);
+    //Chama o método assícrono getInfo e retorna a informação após executar a informação    
+    const data = qs.stringify({
+        token: "{Your token Here}",
+        data: {
+            name: "nameFirst",
+            email: "internetEmail",
+            phone: "phoneHome",
+            _repeat: 300
+        }
+    });
+    const dataReturn = yield call(api.post, '/q', data);
+
+    console.log("SAGA - Retorno do Call GetInfo ");
+    console.log(dataReturn)
+    console.log(dataReturn.data[0].email + " - " + dataReturn.data[0].phone)
     //Chama a action ChangeInfo e despacha a ReduxAction
-    yield put(changeInfo(dataReturn.info));
+    yield put(changeInfo(dataReturn.data[0].email + " - " + dataReturn.data[0].phone));
 }
 
 //Junta todos as sagas deste objeto
